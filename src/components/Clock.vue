@@ -1,6 +1,11 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import {midToHMS, midToHMSBin, midToHMSRep, millisecondsInDay} from "@/utils/time-in-day";
+import {
+  milliInDayToHourMinuteSecondMilli,
+  milliInDayToRepHourMinuteSecondMilli,
+  milliInDayToBinHourMinuteSecondMilli,
+  currentRealMilliInDay,
+} from "@/utils/time-in-day";
 import {FpsCounter} from "@/utils/fps-counter";
 import {rhythmQuery} from "@/utils/thu-rhythm";
 
@@ -8,28 +13,28 @@ const TIME_UPDATE_INTERVAL = 30;
 const EVENT_UPDATE_INTERVAL = 200;
 const MILLI_PER_DAY = 24 * 60 * 60 * 1000;
 
-const mid = ref(millisecondsInDay());
+const mid = ref(currentRealMilliInDay());
 const tps = ref("NaN");
 const rhy = ref(rhythmQuery(mid.value));
 const counter = new FpsCounter(20);
 
 function midToHMSStr(mid) {
-  const [h, m, s] = midToHMS(mid);
+  const [h, m, s] = milliInDayToHourMinuteSecondMilli(mid);
   return h.toString().padStart(2, '0') + ":" + m.toString().padStart(2, '0') + ":" + s.toString().padStart(2, '0');
 }
 
 function midToHMSStrRep(mid) {
-  const [h, m, s] = midToHMSRep(mid);
+  const [h, m, s] = milliInDayToRepHourMinuteSecondMilli(mid);
   return h.toString().padStart(1, '0') + ":" + m.toString().padStart(2, '0') + ":" + s.toString().padStart(2, '0');
 }
 
 function midToHMSStrBin(mid) {
-  const [h, m, s] = midToHMSBin(mid);
+  const [h, m, s] = milliInDayToBinHourMinuteSecondMilli(mid);
   return h.toString(16).toUpperCase() + ":" + m.toString(16).toUpperCase().padStart(2, '0') + ":" + s.toString(16).toUpperCase().padStart(2, '0');
 }
 
 function tick() {
-  mid.value = millisecondsInDay();
+  mid.value = currentRealMilliInDay();
   tps.value = (counter.sample(mid.value) * 1000).toFixed(2);
 }
 
