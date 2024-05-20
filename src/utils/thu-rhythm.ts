@@ -41,7 +41,7 @@ export const RHYTHM: Rhythm = {
         { event: "小课间", start: hm2milli(20, 5) },
         { event: "第六大节第二小节", start: hm2milli(20, 10) },
         { event: "小课间", start: hm2milli(20, 55) },
-        { event: "第六大节第二小节", start: hm2milli(21, 0) },
+        { event: "第六大节第三小节", start: hm2milli(21, 0) },
         { event: "晚间休息", start: hm2milli(21, 45) },
     ],
 };
